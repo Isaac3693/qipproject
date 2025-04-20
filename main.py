@@ -54,8 +54,9 @@ def run_routine(Nrange, j):
   fake_osaka = FakeOsaka()
   pm_aer = generate_preset_pass_manager(backend=aer_sim, optimization_level=1)
   pm_osaka = generate_preset_pass_manager(backend=fake_osaka, optimization_level=1)
-  estimator_aer = EstimatorV2(backend=aer_sim)
-  estimator_osaka = EstimatorV2(backend=fake_osaka)
+  ##TODO: incorporate proper backends
+  estimator_aer = EstimatorV2()
+  # estimator_osaka = EstimatorV2(backend=fake_osaka)
 
 
 
@@ -115,7 +116,8 @@ def ansatz(N:int, ndepth:int, rgates:list[str]):
 
   qc = QuantumCircuit(N)
 
-  parm = [Parameter(f"th{i}") for i in range(len(parms))]
+  #create the parameter for every gate we would like to add
+  parm = [Parameter(f"th{i}") for i in range(N*ndepth)]
 
   rgate_iter = 0
   amount_rgates = len(rgates)
@@ -179,7 +181,12 @@ def cost(params, circuit, hamiltonian, estimator):
   return cost
 
 
+if __name__ == "__main__":
 
+  #define the system size 
+  N = 4
+
+  
 
     
 
